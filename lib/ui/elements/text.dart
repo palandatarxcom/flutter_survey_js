@@ -13,6 +13,7 @@ final SurveyElementBuilder textBuilder =
   final e = element as s.Text;
   Widget widget = ReactiveTextField(
     formControlName: element.name!,
+    validationMessages: {'required': (error) => '必填'},
   );
 
   if (e.inputType == 'date') {
@@ -65,6 +66,7 @@ final SurveyElementBuilder textBuilder =
       keyboardType: TextInputType.number,
       formControlName: element.name!,
       valueAccessor: NumStringValueAccessor(),
+      validationMessages: {'required': (error) => '必填'},
     );
   }
   return widget.wrapQuestionTitle(element, hasTitle: hasTitle);

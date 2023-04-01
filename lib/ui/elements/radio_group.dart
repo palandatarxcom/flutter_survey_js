@@ -12,6 +12,7 @@ final SurveyElementBuilder radioGroupBuilder =
     options: GroupButtonOptions(spacing: 0, runSpacing: 0),
     isRadio: true,
     formControlName: element.name!,
+    validationMessages: {'required': (error) => '必填'},
     buttons: (e.choices ?? []),
   ).wrapQuestionTitle(element, hasTitle: hasTitle);
 };
