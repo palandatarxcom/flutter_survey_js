@@ -18,8 +18,10 @@
         {
           "type": "radiogroup",
           "name": "radiogroup_question",
+          "isRequired": true,
           "choices": [
-            "item1"
+            "item1",
+            "item2"
           ]
         },
         {
