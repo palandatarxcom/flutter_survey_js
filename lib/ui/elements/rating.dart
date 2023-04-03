@@ -29,5 +29,6 @@ final SurveyElementBuilder ratingBuilder =
   return ReactiveSegmentedControl(
     formControlName: element.name!,
     children: children,
+    validationMessages: {'required': (error) => '必填'},
   ).wrapQuestionTitle(element, hasTitle: hasTitle);
 };
