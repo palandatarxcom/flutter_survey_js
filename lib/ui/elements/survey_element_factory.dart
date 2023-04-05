@@ -57,6 +57,7 @@ class SurveyElementFactory {
     register<s.Comment>(
         (context, element, {bool hasTitle = true}) => ReactiveTextField(
               formControlName: element.name!,
+              validationMessages: {'required': (error) => '必填'},
               decoration: new InputDecoration(
                 fillColor: Colors.white,
                 border: OutlineInputBorder(
@@ -98,6 +99,7 @@ class SurveyElementFactory {
       final e = (element as s.Dropdown);
       return ReactiveDropdownField(
         formControlName: element.name!,
+        validationMessages: {'required': (error) => '必填'},
         items: e.choices
                 ?.map((e) => DropdownMenuItem(
                     value: e.value,

@@ -55,6 +55,7 @@ final SurveyElementBuilder textBuilder =
   if (e.inputType == 'tel') {
     widget = ReactiveTextField(
       keyboardType: TextInputType.phone,
+      validationMessages: {'required': (error) => '必填'},
       formControlName: element.name!,
     );
   }

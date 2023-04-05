@@ -1,14 +1,3 @@
-// ignore_for_file: avoid_print
-
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_survey_js/model/survey.dart';
-import 'package:flutter_survey_js/survey.dart' as s;
-
-void main() async {
-  var survey = '''
 {
     "title": "抑郁症患者问卷",
     "logoPosition": "right",
@@ -42,11 +31,11 @@ void main() async {
                             "name": "问题2",
                             "isRequired": true,
                             "choices": [
-                              "item1",
-                              "item2",
-                              "item3"
+                                "item1",
+                                "item2",
+                                "item3"
                             ]
-                       }
+                        }
                     ],
                     "title": "请完善您的基本情况"
                 },
@@ -174,65 +163,4 @@ void main() async {
     ],
     "showQuestionNumbers": "off",
     "requiredText": "【必填项】"
-}
-''';
-  runApp(SurveyTestApp(surveyJson: survey));
-}
-
-class SurveyTestApp extends StatelessWidget {
-  const SurveyTestApp({
-    key,
-    required this.surveyJson,
-  });
-
-  final String surveyJson;
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Survey Test',
-      localizationsDelegates: const [
-        ...GlobalMaterialLocalizations.delegates,
-        s.MultiAppLocalizationsDelegate(),
-      ],
-      supportedLocales: const [
-        Locale('en', ''),
-        Locale('zh', ''),
-      ],
-      home: SurveyTestPage(surveyJson: surveyJson),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
-
-class SurveyTestPage extends StatelessWidget {
-  const SurveyTestPage({Key? key, required this.surveyJson}) : super(key: key);
-
-  final String surveyJson;
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: null,
-        body: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: s.SurveyWidget(
-              survey: Survey.fromJson(jsonDecode(surveyJson)),
-              onChange: (v) {
-                print(v);
-              },
-              onSubmit: (v) async {
-                print('!!!submit!!!\n$v');
-              },
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 }
