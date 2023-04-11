@@ -45,6 +45,21 @@
                     "elements": [
                         {
                             "type": "checkbox",
+                            "name": "Q099",
+                            "title": "Q099",
+                            "choices": [
+                                "item1",
+                                "item2",
+                                "item3"
+                            ],
+                            "hasNone": true,
+                            "noneText": "None",
+                            "hasOther": true,
+                            "otherText": "Other:",
+                            "maxSelectedChoices": 3
+                        },
+                        {
+                            "type": "checkbox",
                             "name": "031 您最希望获得哪些抑郁症相关知识？（最多选三种）",
                             "title": "031 您最希望获得哪些抑郁症相关知识？（最多选三种）",
                             "choices": [
@@ -107,9 +122,9 @@
                         },
                         {
                             "type": "text",
-                            "name": "039 其他对抑郁症诊断、治疗及预后最担心的问题：",
+                            "name": "Q039",
                             "visibleIf": "{Q038} anyof ['NA']",
-                            "title": "039 其他对抑郁症诊断、治疗及预后最担心的问题："
+                            "title": "Q039"
                         },
                         {
                             "type": "checkbox",
