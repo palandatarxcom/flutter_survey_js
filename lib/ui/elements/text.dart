@@ -11,16 +11,20 @@ import 'survey_element_factory.dart';
 final SurveyElementBuilder textBuilder =
     (context, element, {bool hasTitle = true}) {
   final e = element as s.Text;
+  final String? hintText = e.placeholder;
   Widget widget = ReactiveTextField(
     formControlName: element.name!,
     validationMessages: {'required': (error) => '必填'},
+    decoration: InputDecoration(hintText: hintText),
   );
 
   if (e.inputType == 'date') {
     widget = ReactiveDateTimePicker(
-        locale: Localizations.localeOf(context),
-        formControlName: element.name!,
-        type: ReactiveDatePickerFieldType.date);
+      locale: Localizations.localeOf(context),
+      formControlName: element.name!,
+      type: ReactiveDatePickerFieldType.date,
+      decoration: InputDecoration(hintText: hintText),
+    );
   }
   if (e.inputType == 'color') {
     widget = ReactiveColorPicker(formControlName: element.name!);
@@ -28,19 +32,32 @@ final SurveyElementBuilder textBuilder =
   if (e.inputType == 'email') {
     widget = ReactiveTextField(
       formControlName: element.name!,
+      decoration: InputDecoration(hintText: hintText),
     );
   }
   if (e.inputType == 'datetime') {
     widget = ReactiveDateTimePicker(
-        locale: Localizations.localeOf(context),
-        formControlName: element.name!,
-        type: ReactiveDatePickerFieldType.dateTime);
+      locale: Localizations.localeOf(context),
+      formControlName: element.name!,
+      type: ReactiveDatePickerFieldType.dateTime,
+      decoration: InputDecoration(hintText: hintText),
+    );
   }
   if (e.inputType == 'datetime-local') {
     widget = ReactiveDateTimePicker(
-        locale: Localizations.localeOf(context),
-        formControlName: element.name!,
-        type: ReactiveDatePickerFieldType.dateTime);
+      locale: Localizations.localeOf(context),
+      formControlName: element.name!,
+      type: ReactiveDatePickerFieldType.dateTime,
+      decoration: InputDecoration(hintText: hintText),
+    );
+  }
+  if (e.inputType == 'datetime-local') {
+    widget = ReactiveDateTimePicker(
+      locale: Localizations.localeOf(context),
+      formControlName: element.name!,
+      type: ReactiveDatePickerFieldType.dateTime,
+      decoration: InputDecoration(hintText: hintText),
+    );
   }
   if (e.inputType == 'month') {
     //TODO
@@ -49,6 +66,7 @@ final SurveyElementBuilder textBuilder =
     widget = ReactiveTextField(
       obscureText: true,
       formControlName: element.name!,
+      decoration: InputDecoration(hintText: hintText),
     );
   }
   if (e.inputType == 'range') {}
@@ -57,6 +75,7 @@ final SurveyElementBuilder textBuilder =
       keyboardType: TextInputType.phone,
       validationMessages: {'required': (error) => '必填'},
       formControlName: element.name!,
+      decoration: InputDecoration(hintText: hintText),
     );
   }
   if (e.inputType == 'time') {}
@@ -68,6 +87,7 @@ final SurveyElementBuilder textBuilder =
       formControlName: element.name!,
       valueAccessor: NumStringValueAccessor(),
       validationMessages: {'required': (error) => '必填'},
+      decoration: InputDecoration(hintText: hintText),
     );
   }
   return widget.wrapQuestionTitle(element, hasTitle: hasTitle);
