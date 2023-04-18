@@ -26,9 +26,6 @@ Survey _$SurveyFromJson(Map<String, dynamic> json) => Survey()
   ..pages = (json['pages'] as List<dynamic>?)
       ?.map((e) => Page.fromJson(e as Map<String, dynamic>))
       .toList()
-  ..questions = (json['questions'] as List<dynamic>?)
-      ?.map((e) => ElementBase.fromJson(e as Map<String, dynamic>))
-      .toList()
   ..triggers = (json['triggers'] as List<dynamic>?)
       ?.map((e) => SurveyTrigger.fromJson(e as Map<String, dynamic>))
       .toList()
@@ -109,7 +106,6 @@ Map<String, dynamic> _$SurveyToJson(Survey instance) {
   writeNotNull('completedHtmlOnCondition', instance.completedHtmlOnCondition);
   writeNotNull('loadingHtml', instance.loadingHtml);
   writeNotNull('pages', instance.pages);
-  writeNotNull('questions', instance.questions);
   writeNotNull('triggers', instance.triggers);
   writeNotNull('calculatedValues', instance.calculatedValues);
   writeNotNull('surveyId', instance.surveyId);
@@ -700,7 +696,8 @@ Dropdown _$DropdownFromJson(Map<String, dynamic> json) => Dropdown()
   ..choicesMin = json['choicesMin'] as num?
   ..choicesMax = json['choicesMax'] as num?
   ..choicesStep = json['choicesStep'] as num?
-  ..autoComplete = json['autoComplete'] as String?;
+  ..autoComplete = json['autoComplete'] as String?
+  ..placeholder = json['placeholder'] as String?;
 
 Map<String, dynamic> _$DropdownToJson(Dropdown instance) {
   final val = <String, dynamic>{};
@@ -763,6 +760,7 @@ Map<String, dynamic> _$DropdownToJson(Dropdown instance) {
   writeNotNull('choicesMax', instance.choicesMax);
   writeNotNull('choicesStep', instance.choicesStep);
   writeNotNull('autoComplete', instance.autoComplete);
+  writeNotNull('placeholder', instance.placeholder);
   return val;
 }
 
@@ -962,7 +960,8 @@ MultipleTextItem _$MultipleTextItemFromJson(Map<String, dynamic> json) =>
       ..requiredErrorText = json['requiredErrorText'] as String?
       ..validators = (json['validators'] as List<dynamic>?)
           ?.map((e) => SurveyValidator.fromJson(e as Map<String, dynamic>))
-          .toList();
+          .toList()
+      ..placeholder = json['placeholder'] as String?;
 
 Map<String, dynamic> _$MultipleTextItemToJson(MultipleTextItem instance) {
   final val = <String, dynamic>{};
@@ -981,6 +980,7 @@ Map<String, dynamic> _$MultipleTextItemToJson(MultipleTextItem instance) {
   writeNotNull('size', instance.size);
   writeNotNull('requiredErrorText', instance.requiredErrorText);
   writeNotNull('validators', instance.validators);
+  writeNotNull('placeholder', instance.placeholder);
   return val;
 }
 

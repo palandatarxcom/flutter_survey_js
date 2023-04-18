@@ -8,6 +8,7 @@ import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart
 import 'package:logging/logging.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
+import '../../generated/l10n.dart';
 import 'checkbox.dart';
 import 'image.dart';
 import 'matrix.dart';
@@ -46,9 +47,31 @@ class SurveyElementFactory {
     register<s.RadioGroup>(radioGroupBuilder);
     register<s.Boolean>(
         //TODO ReactiveSwitch is not safe
-        (context, element, {bool hasTitle = true}) => ReactiveSwitch(
+        (context, element, {bool hasTitle = true}) {
+      s.Boolean booleanElement = element as s.Boolean;
+      String? labelFalse = booleanElement.labelFalse;
+      String? labelTrue = booleanElement.labelTrue;
+      const labelPadding = 8.0;
+      return Row(
+        children: [
+          if (labelFalse != null)
+            Padding(
+              padding: const EdgeInsets.only(right: labelPadding),
+              child: Text(labelFalse),
+            ),
+          Flexible(
+            child: ReactiveSwitch(
               formControlName: element.name!,
-            ).wrapQuestionTitle(element, hasTitle: hasTitle),
+            ),
+          ),
+          if (labelTrue != null)
+            Padding(
+              padding: const EdgeInsets.only(left: labelPadding),
+              child: Text(labelTrue),
+            ),
+        ],
+      ).wrapQuestionTitle(element, hasTitle: hasTitle);
+    },
         control: (element, {validators = const []}) =>
             FormControl<bool>(validators: validators));
 
@@ -56,21 +79,23 @@ class SurveyElementFactory {
         control: (element, {validators = const []}) => FormControl<int>(
             validators: validators, value: (element as s.Rating).defaultValue));
 
-    register<s.Comment>(
-        (context, element, {bool hasTitle = true}) => ReactiveTextField(
-              formControlName: element.name!,
-              validationMessages: {'required': (error) => '必填'},
-              decoration: InputDecoration(
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                    borderSide: BorderSide(color: Colors.blue)),
-                filled: true,
-                contentPadding:
-                    EdgeInsets.only(bottom: 10.0, left: 10.0, right: 10.0),
-                hintText: (element as s.Comment).placeholder,
-              ),
-            ).wrapQuestionTitle(element, hasTitle: hasTitle));
+    register<s.Comment>((context, element, {bool hasTitle = true}) =>
+        ReactiveTextField(
+          keyboardType: TextInputType.multiline,
+          maxLines: null,
+          formControlName: element.name!,
+          validationMessages: {'required': (error) => '必填'},
+          decoration: InputDecoration(
+            fillColor: Colors.white,
+            border: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                borderSide: BorderSide(color: Colors.blue)),
+            filled: true,
+            contentPadding:
+                const EdgeInsets.only(bottom: 10.0, left: 10.0, right: 10.0),
+            hintText: (element as s.Comment).placeholder,
+          ),
+        ).wrapQuestionTitle(element, hasTitle: hasTitle));
 
     register<s.Text>(textBuilder, control: textControlBuilder);
     register<s.MultipleText>(multipleTextBuilder,
@@ -100,9 +125,12 @@ class SurveyElementFactory {
 
     register<s.Dropdown>((context, element, {bool hasTitle = true}) {
       final e = (element as s.Dropdown);
+      final placeholderString = S.of(context).placeholder;
+
       return ReactiveDropdownField(
         formControlName: element.name!,
         validationMessages: {'required': (error) => '必填'},
+        hint: Text(element.placeholder ?? placeholderString),
         items: e.choices
                 ?.map((e) => DropdownMenuItem(
                     value: e.value,

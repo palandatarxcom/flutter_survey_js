@@ -26,7 +26,7 @@ class SurveyWidget extends StatefulWidget {
   final SurveyController? controller;
   final SurveyBuilder? builder;
 
-  const SurveyWidget({
+  SurveyWidget({
     Key? key,
     required this.survey,
     this.answer,
@@ -37,6 +37,7 @@ class SurveyWidget extends StatefulWidget {
     this.builder,
     this.showQuestionsInOnePage = false,
   }) : super(key: key);
+
   @override
   State<StatefulWidget> createState() => SurveyWidgetState();
 }
@@ -204,11 +205,10 @@ class SurveyProvider extends InheritedWidget {
 
 extension SurveyFormExtension on s.Survey {
   List<s.ElementBase> getElements() {
-    return questions ??
-        pages!.fold<List<s.ElementBase>>(
-            [],
-            (previousValue, element) =>
-                previousValue..addAll(element.elements ?? []));
+    return pages!.fold<List<s.ElementBase>>(
+        [],
+        (previousValue, element) =>
+            previousValue..addAll(element.elements ?? []));
   }
 }
 
@@ -260,6 +260,6 @@ class SurveyController {
 
 extension SurveyExtension on s.Survey {
   int getPageCount() {
-    return questions == null ? (pages ?? []).length : 1;
+    return (pages ?? []).length;
   }
 }

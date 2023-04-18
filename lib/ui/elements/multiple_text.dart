@@ -18,7 +18,12 @@ final SurveyElementBuilder multipleTextBuilder =
         itemCount: texts.length,
         itemBuilder: (BuildContext context, int index) {
           final res = SurveyElementFactory().resolve(context, texts[index]);
-          return res;
+          return index == 0
+              ? Padding(
+                  padding: EdgeInsets.only(top: 8.0),
+                  child: res,
+                )
+              : res;
         },
         separatorBuilder: (BuildContext context, int index) {
           return SurveyElementFactory().separatorBuilder(context);
@@ -43,5 +48,6 @@ s.Text toText(s.MultipleTextItem multipleTextItem) {
     ..title = multipleTextItem.title
     ..maxLength = multipleTextItem.maxLength
     ..size = multipleTextItem.size
-    ..requiredErrorText = multipleTextItem.requiredErrorText;
+    ..requiredErrorText = multipleTextItem.requiredErrorText
+    ..placeholder = multipleTextItem.placeholder;
 }
