@@ -20,6 +20,7 @@ class SurveyWidget extends StatefulWidget {
   final s.Survey survey;
   final Map<String, Object?>? answer;
   final FutureOr<void> Function(dynamic data)? onSubmit;
+  final FutureOr<void> Function(dynamic data)? onErrors;
   final ValueSetter<Map<String, Object?>?>? onChange;
   final bool showQuestionsInOnePage;
   final SurveyController? controller;
@@ -30,6 +31,7 @@ class SurveyWidget extends StatefulWidget {
     required this.survey,
     this.answer,
     this.onSubmit,
+    this.onErrors,
     this.onChange,
     this.controller,
     this.builder,
@@ -139,6 +141,7 @@ class SurveyWidgetState extends State<SurveyWidget> {
     if (formGroup.valid) {
       widget.onSubmit?.call(formGroup.value);
     } else {
+      widget.onErrors?.call(formGroup.errors);
       formGroup.markAllAsTouched();
     }
   }
@@ -180,7 +183,8 @@ class SurveyProvider extends InheritedWidget {
   final int initialPage;
   final bool showQuestionsInOnePage;
 
-  const SurveyProvider({Key? key, 
+  const SurveyProvider({
+    Key? key,
     required this.elementsState,
     required this.child,
     required this.survey,
