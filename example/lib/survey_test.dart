@@ -41,6 +41,10 @@ void main() async {
                             "type": "dropdown",
                             "name": "问题2",
                             "isRequired": true,
+                            "showOtherItem": true,
+                            "showNoneItem": true,
+                            "otherText": "其他",
+                            "noneText": "以上都不是",
                             "choices": [
                               "item1",
                               "item2",
