@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_survey_js/survey.dart' as s;
+import 'package:flutter_survey_js_model/flutter_survey_js_model.dart' as s;
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../../generated/l10n.dart';
@@ -36,10 +36,10 @@ class _DropdownWidgetWithOtherOptionState
     if (controlValue == null) {
       return false;
     }
-    return !(widget.dropdown.choices
-            ?.map((e) => e.text)
-            .contains(controlValue) ??
-        true);
+    final choiceMatch = widget.dropdown.choices
+        ?.map((e) => e.castToItemvalue().value?.value)
+        .contains(controlValue);
+    return !(choiceMatch == true);
   }();
 
   var textEditingController = TextEditingController();
@@ -52,9 +52,11 @@ class _DropdownWidgetWithOtherOptionState
       ...e.choices
               ?.map(
                 (e) => DropdownMenuItem(
-                  value: e.value,
+                  value: e.castToItemvalue().value?.value,
                   child: Text(
-                    e.text ?? e.value?.toString() ?? '',
+                    e.castToItemvalue().text ??
+                        e.castToItemvalue().value?.toString() ??
+                        '',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
@@ -105,8 +107,9 @@ class _DropdownWidgetWithOtherOptionState
                     showOtherTextField = true;
                     return;
                   }
-                  List<String> choices =
-                      (e.choices ?? []).map((e) => e.value as String).toList();
+                  List<Object> choices = (e.choices?.toList() ?? [])
+                      .map((e) => e.castToItemvalue().value!.value)
+                      .toList();
                   if (e.showNoneItem == true) {
                     choices.add('none');
                   }
