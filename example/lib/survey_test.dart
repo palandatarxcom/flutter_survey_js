@@ -5,7 +5,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_survey_js/survey.dart' as s;
-import 'package:flutter_survey_js_model/flutter_survey_js_model.dart' as m;
 
 void main() async {
   var survey = '''
@@ -384,7 +383,7 @@ class SurveyTestPage extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: s.SurveyWidget(
-              survey: m.surveyFromJson(json.decode(surveyJson))!,
+              survey: s.surveyFromJson(json.decode(surveyJson))!,
               onChange: (v) {
                 print(v);
               },
