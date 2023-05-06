@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_survey_js/generated/l10n.dart';
 import 'package:flutter_survey_js/survey.dart';
-import 'package:flutter_survey_js/ui/survey_widget.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -356,5 +355,75 @@ void main() {
     expect(find.text(otherText), findsOneWidget);
     expect(find.byType(ReactiveTextField), findsNothing);
     expect(find.text(existingAnswer), findsOneWidget);
+  });
+
+  group('Other error text', () {
+    testWidgets(
+        'does not continue to display after a selecting an existing answer then re-selecting the Other field',
+        (WidgetTester tester) async {
+      const otherText = "Other size";
+      const questionName = "What t-shirt size do you want?";
+      const existingAnswer = "M";
+      final SurveyController controller = SurveyController();
+
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: const [
+            appLocalizationDelegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          home: Material(
+            child: SurveyWidget(
+                controller: controller,
+                survey: surveyFromJson(const {
+                  "questions": [
+                    {
+                      "type": "dropdown",
+                      "name": questionName,
+                      "isRequired": true,
+                      "choices": [
+                        "S",
+                        existingAnswer,
+                        "L",
+                        "XL",
+                      ],
+                      "showOtherItem": true,
+                      "otherText": otherText,
+                    }
+                  ]
+                })!),
+          ),
+        ),
+      );
+
+      await tester.pump();
+      await tester.idle();
+      await tester.tap(find.byType(ReactiveDropdownField));
+      await tester.pump();
+      await tester.idle();
+      await tester.tap(find.text(otherText).last);
+      await tester.pump();
+      await tester.idle();
+      expect(find.byType(ReactiveTextField), findsOneWidget);
+      expect(find.text('required'), findsNothing);
+      controller.submit();
+      await tester.pump();
+      await tester.idle();
+      expect(find.text('required'), findsOneWidget);
+
+      await tester.tap(find.text(otherText).last);
+      await tester.pump();
+      await tester.idle();
+      await tester.tap(find.text(existingAnswer).last);
+      await tester.pump();
+      await tester.idle();
+      await tester.tap(find.text(existingAnswer).last);
+      await tester.pump();
+      await tester.idle();
+      await tester.tap(find.text(otherText).last);
+      expect(find.text('required'), findsNothing);
+    });
   });
 }
