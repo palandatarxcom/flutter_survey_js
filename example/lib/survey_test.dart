@@ -49,6 +49,23 @@ void main() async {
                               "item2",
                               "item3"
                             ]
+                        },
+                        {
+                            "type": "checkbox",
+                            "name": "问题2（多选）",
+                            "isRequired": true,
+                            "showSelectAllItem": true,
+                            "showNoneItem": true,
+                            "showOtherItem": true,
+                            "selectAllText": "全是",
+                            "noneText": "全否",
+                            "otherText": "其他",
+                            "otherPlaceholder": "请填写",
+                            "choices": [
+                              "item1",
+                              "item2",
+                              "item3"
+                            ]
                        }
                     ],
                     "title": "请完善您的基本情况"
