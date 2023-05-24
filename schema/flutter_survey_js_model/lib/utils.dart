@@ -111,27 +111,128 @@ extension SurveyShowQuestionNumbersExtension on SurveyShowQuestionNumbers {
 }
 
 extension JsonObjectExtension on JsonObject? {
+  bool? tryCastToBool() {
+    if (this == null) {
+      return null;
+    }
+    return this!.value.tryCastToBool();
+  }
+
+  String? tryCastToString() {
+    if (this == null) {
+      return null;
+    }
+    return this!.value.tryCastToString();
+  }
+
+  num? tryCastToNum() {
+    if (this == null) {
+      return null;
+    }
+    return this!.value.tryCastToNum();
+  }
+
+  DateTime? tryCastToDateTime() {
+    if (this == null) {
+      return null;
+    }
+    return this!.value.tryCastToDateTime();
+  }
+
   int? tryCastToInt() {
     if (this == null) {
       return null;
     }
-    if (!(this is NumJsonObject)) {
-      return null;
-    }
-    return (this as NumJsonObject).value.toInt();
+    return this!.value.tryCastToInt();
   }
 
-  List<Object> tryCastToListObj() {
+  List<Object>? tryCastToListObj() {
     if (this == null) {
-      return [];
+      return null;
     }
     if (!(this is ListJsonObject)) {
-      return [];
+      return null;
     }
     return (this as ListJsonObject)
         .value
         .where((element) => element != null)
         .map((e) => e!)
         .toList();
+  }
+}
+
+extension ObjectExtension on Object? {
+  List<Object>? tryCastToList() {
+    if (this == null) {
+      return null;
+    }
+    if (this is List) {
+      return (this as List).cast<Object>();
+    }
+    return null;
+  }
+
+  bool? tryCastToBool() {
+    if (this == null) {
+      return null;
+    }
+    if (this is bool) {
+      return this as bool;
+    }
+    return this.toString().toBoolean();
+  }
+
+  String? tryCastToString() {
+    if (this == null) {
+      return null;
+    }
+    if (this is String) {
+      return this as String;
+    }
+    return this.toString();
+  }
+
+  int? tryCastToInt() {
+    if (this == null) {
+      return null;
+    }
+    if (this is num) {
+      return (this as num).toInt();
+    }
+    if (this is int) {
+      return this as int;
+    }
+    return int.tryParse(this.toString());
+  }
+
+  DateTime? tryCastToDateTime() {
+    if (this == null) {
+      return null;
+    }
+    return DateTime.tryParse(this.toString());
+  }
+
+  num? tryCastToNum() {
+    if (this == null) {
+      return null;
+    }
+    if (this is num) {
+      return this as num;
+    }
+    return num.tryParse(this.toString());
+  }
+}
+
+extension on String {
+  bool? toBoolean() {
+    return (this.toLowerCase() == "true" ||
+            this.toLowerCase() == "1" ||
+            this.toLowerCase() == "on")
+        ? true
+        : (this.toLowerCase() == "false" ||
+                this.toLowerCase() == "0" ||
+                this.toLowerCase() == "off"
+            ? false
+            : null);
   }
 }

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_survey_js/ui/survey_configuration.dart';
 import 'package:flutter_survey_js_model/flutter_survey_js_model.dart' as s;
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:reactive_segmented_control/reactive_segmented_control.dart';
 
-import 'question_title.dart';
-import 'survey_element_factory.dart';
-
-Widget ratingBuilder(context, element, {bool hasTitle = true}) {
+Widget ratingBuilder(context, element, {ElementConfiguration? configuration}) {
   final e = element as s.Rating;
 
   final textStyle = Theme.of(context)
@@ -51,7 +49,7 @@ Widget ratingBuilder(context, element, {bool hasTitle = true}) {
         formControlName: element.name!,
         validationMessages: {'required': (error) => '必填'},
         children: getChildren(selectedValue: control.value),
-      ).wrapQuestionTitle(element, hasTitle: hasTitle);
+      ).wrapQuestionTitle(context, element, configuration: configuration);
     },
   );
 }

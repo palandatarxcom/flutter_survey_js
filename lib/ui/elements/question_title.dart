@@ -34,13 +34,13 @@ class QuestionTitle extends StatelessWidget {
           if ((survey.survey.showQuestionNumbers?.isOn ?? true) &&
               status.indexAll != null) {
             return Text(
-              '${status.indexAll! + 1}.',
+              '${status.indexAll! + 1}. ',
               style: titleTextStyle(),
             );
           } else if ((survey.survey.showQuestionNumbers?.isOnPage ?? false) &&
               status.indexInPage != null) {
             return Text(
-              '${status.indexInPage! + 1}.',
+              '${status.indexInPage! + 1}. ',
               style: titleTextStyle(),
             );
           }
@@ -94,20 +94,4 @@ class QuestionTitle extends StatelessWidget {
       fontFamily: 'SF-UI-Text',
       fontWeight: FontWeight.w900,
       color: Colors.red);
-}
-
-extension QuestionTitleExtension on Widget {
-  Widget wrapQuestionTitle(s.Elementbase element, {required bool hasTitle}) {
-    if (!hasTitle) {
-      //in a matrix
-      return this;
-    }
-    if (element is s.Question) {
-      return QuestionTitle(
-        q: element,
-        child: this,
-      );
-    }
-    return this;
-  }
 }

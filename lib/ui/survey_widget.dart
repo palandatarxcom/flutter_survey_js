@@ -89,26 +89,28 @@ class SurveyWidgetState extends State<SurveyWidget> {
     }
     final elementsState = ElementsState(status);
 
-    return ReactiveForm(
-      formGroup: formGroup,
-      child: StreamBuilder(
-        stream: formGroup.valueChanges,
-        builder: (BuildContext context,
-            AsyncSnapshot<Map<String, Object?>?> snapshot) {
-          return SurveyProvider(
-            survey: widget.survey,
-            formGroup: formGroup,
-            elementsState: elementsState,
-            currentPage: currentPage,
-            initialPage: initialPage,
-            showQuestionsInOnePage: widget.showQuestionsInOnePage,
-            child: Builder(
-                builder: (context) =>
-                    (widget.builder ?? defaultBuilder)(context)),
-          );
-        },
-      ),
-    );
+    return SurveyConfiguration.copyAncestor(
+        context: context,
+        child: ReactiveForm(
+          formGroup: formGroup,
+          child: StreamBuilder(
+            stream: formGroup.valueChanges,
+            builder: (BuildContext context,
+                AsyncSnapshot<Map<String, Object?>?> snapshot) {
+              return SurveyProvider(
+                survey: widget.survey,
+                formGroup: formGroup,
+                elementsState: elementsState,
+                currentPage: currentPage,
+                initialPage: initialPage,
+                showQuestionsInOnePage: widget.showQuestionsInOnePage,
+                child: Builder(
+                    builder: (context) =>
+                        (widget.builder ?? defaultBuilder)(context)),
+              );
+            },
+          ),
+        ));
   }
 
   void rebuildForm() {
@@ -118,11 +120,11 @@ class SurveyWidgetState extends State<SurveyWidget> {
     _controlsMap = {};
     _currentPage = 0;
 
-    formGroup = elementsToFormGroup(widget.survey.getElements(),
+    formGroup = elementsToFormGroup(context, widget.survey.getElements(),
         controlsMap: _controlsMap);
 
     if (widget.answer != null) {
-      formGroup.updateValue(widget.answer);
+      formGroup.patchValue(widget.answer);
     }
 
     _listener = formGroup.valueChanges.listen((event) {
@@ -173,8 +175,6 @@ class SurveyWidgetState extends State<SurveyWidget> {
 }
 
 class SurveyProvider extends InheritedWidget {
-  @override
-  final Widget child;
   final s.Survey survey;
   final FormGroup formGroup;
   final ElementsState elementsState;
@@ -185,7 +185,7 @@ class SurveyProvider extends InheritedWidget {
   const SurveyProvider({
     Key? key,
     required this.elementsState,
-    required this.child,
+    required Widget child,
     required this.survey,
     required this.formGroup,
     required this.currentPage,
