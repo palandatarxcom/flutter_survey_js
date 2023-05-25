@@ -10,7 +10,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 import 'matrix_dropdown_base.dart';
 
-Widget matrixDynamicBuilder(context, element,
+Widget matrixDynamicBuilder(BuildContext context, s.Elementbase element,
     {ElementConfiguration? configuration}) {
   return MatrixDynamicElement(
     formControlName: element.name!,
@@ -28,18 +28,33 @@ class MatrixDynamicElement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    createNew() {
+    createNew({Object? value}) {
       //create new formGroup
       return elementsToFormGroup(
           context,
           (matrix.columns?.toList() ?? [])
               .map((column) => matrixDropdownColumnToQuestion(matrix, column))
-              .toList());
+              .toList(),
+          value: value);
     }
 
     return ReactiveFormArray(
       formArrayName: formControlName,
       builder: (context, formArray, child) {
+        final formGroups = <FormGroup>[];
+        bool modified = false;
+        for (final c in formArray.controls) {
+          if (c is FormGroup) {
+            formGroups.add(c);
+          } else {
+            formGroups.add(createNew(value: c.value));
+            modified = true;
+          }
+        }
+        if (modified) {
+          formArray.clear();
+          formArray.addAll(formGroups);
+        }
         final controls = formArray.controls.cast<FormGroup>().toList();
         List<TableRow> list = <TableRow>[];
 
